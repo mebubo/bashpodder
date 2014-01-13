@@ -3,7 +3,23 @@
 PODCAST_DIR=~/pod
 
 extract_enclosure_urls () {
-    xsltproc parse_rss_enclosure.xsl $1 2>/dev/null | head -n 1
+    local url=$1 limit=$2
+    xsltproc parse_rss_enclosure.xsl $url 2>/dev/null | limit $limit
+}
+
+limit () {
+    local limit=$1
+    case "$limit" in
+        all)
+            cat
+            ;;
+        "")
+            head -n 5
+            ;;
+        *)
+            head -n $limit
+            ;;
+    esac
 }
 
 extract_filename () {
@@ -34,8 +50,8 @@ unquote () {
 }
 
 main () {
-    while read title url; do
-        extract_enclosure_urls $url | download_files $title
+    while read title url limit; do
+        extract_enclosure_urls $url $limit | download_files $title
     done < <(grep -v ^# podcasts.conf)
 }
 
