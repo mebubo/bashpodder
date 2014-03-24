@@ -3,8 +3,8 @@
 PODCAST_DIR=~/media/podcasts
 
 extract_enclosure_urls () {
-    local url=$1 limit=$2
-    xsltproc parse_rss_enclosure.xsl $url 2>/dev/null | limit $limit
+    local url=$1
+    xsltproc parse_rss_enclosure.xsl $url 2>/dev/null
 }
 
 limit () {
@@ -53,8 +53,8 @@ unquote () {
 
 main () {
     while read title url limit; do
-        extract_enclosure_urls $url $limit | download_files $title
-    done < <(grep -v ^# podcasts.conf)
+        extract_enclosure_urls $url | limit $limit | download_files $title
+    done < <(grep -v ^# podcasts.conf | tac)
 }
 
 main
