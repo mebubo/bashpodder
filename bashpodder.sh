@@ -14,7 +14,7 @@ limit () {
             cat
             ;;
         "")
-            head -n 5
+            head -n 2
             ;;
         *)
             head -n $limit
