@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PODCAST_DIR=~/pod
+PODCAST_DIR=~/media/podcasts
 
 extract_enclosure_urls () {
     local url=$1 limit=$2
