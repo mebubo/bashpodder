@@ -30,7 +30,9 @@ download_files () {
     local title=$1
     mkdir -p $PODCAST_DIR/$title
     while read url; do
-        download_file $PODCAST_DIR/$title $url
+        if [ -n "$url" ]; then
+            download_file $PODCAST_DIR/$title $url
+        fi
     done
 }
 
