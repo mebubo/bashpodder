@@ -44,6 +44,7 @@ download_file () {
         echo $path already downloaded
         return
     fi
+    echo "downloading $url to $path"
     wget -c -O "$path.partial" $url && mv "$path.partial" "$path"
 }
 
