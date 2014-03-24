@@ -23,7 +23,8 @@ limit () {
 }
 
 extract_filename () {
-    unquote $(basename $1) | tr " " "_"
+    local normalized=$(unquote $(basename $1) | tr " " "_")
+    echo ${normalized%%\?*}
 }
 
 download_files () {
