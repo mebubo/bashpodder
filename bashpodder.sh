@@ -41,7 +41,7 @@ download_file () {
     local dir=$1 url=$2
     local filename=$(extract_filename $url)
     local path=$dir/"$filename"
-    if [ -f "$path" ]; then
+    if [ -f "$path" -o -L "$path" ]; then
         echo $path already downloaded
         return
     fi
