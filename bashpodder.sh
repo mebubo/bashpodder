@@ -1,10 +1,11 @@
 #!/bin/bash
 
 PODCAST_DIR=~/media/podcasts
+THIS_DIR=$(cd $(dirname $0); pwd)
 
 extract_enclosure_urls () {
     local url=$1
-    xsltproc parse_rss_enclosure.xsl $url 2>/dev/null
+    xsltproc $THIS_DIR/parse_rss_enclosure.xsl $url 2>/dev/null
 }
 
 limit () {
@@ -56,7 +57,7 @@ unquote () {
 main () {
     while read title url limit; do
         extract_enclosure_urls $url | limit $limit | download_files $title
-    done < <(grep -v ^# podcasts.conf | tac)
+    done < <(grep -v ^# $THIS_DIR/podcasts.conf | tac)
 }
 
 main
