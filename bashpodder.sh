@@ -54,10 +54,24 @@ unquote () {
     python3 -c "import urllib.parse, sys; print(urllib.parse.unquote(sys.argv[1]))" $1
 }
 
-main () {
-    while read title url limit; do
-        extract_enclosure_urls $url | limit $limit | download_files $title
-    done < <(grep -v ^# $THIS_DIR/podcasts.conf | tac)
+filter () {
+    local FILTER="$1"
+    if [ -n "$FILTER" ]; then
+        grep "$FILTER"
+    else
+        tac
+    fi
 }
 
-main
+strip_comments () {
+    grep -v ^#
+}
+
+main () {
+    local FILTER=$1
+    while read title url limit; do
+        extract_enclosure_urls $url | limit $limit | tac | download_files $title
+    done < <(cat $THIS_DIR/podcasts.conf | strip_comments | filter $FILTER)
+}
+
+main $@
